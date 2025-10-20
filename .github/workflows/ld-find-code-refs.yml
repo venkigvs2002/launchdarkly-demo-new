@@ -1,0 +1,30 @@
+name: LaunchDarkly Code References
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  find-code-references:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # or your Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: LaunchDarkly Code References
+        uses: launchdarkly/find-code-references@v2.14.0
+        env:
+          LD_ACCESS_TOKEN: ${{ secrets.LD_ACCESS_TOKEN }}
+          LD_PROJECT_KEY: "launchdarkly-demo-new"
+          LD_REPO: ${{ github.repository }}
+          LD_BRANCH: ${{ github.ref_name }}
